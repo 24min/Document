@@ -1,3 +1,7 @@
+---
+typora-root-url: images
+---
+
 
 
 # 简介
@@ -16,4 +20,5 @@ git@github.com:24min/Document.git
 
 ------
 
-![cdl](E:\ltinerary\24min\Document\images\cdl.jpg)
+![cdl](/cdl.jpg)
+

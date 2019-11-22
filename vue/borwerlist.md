@@ -43,7 +43,7 @@
 
 -   `> 5%`: browsers versions selected by global usage statistics. `>=`, `<` and `<=` work too. （统计全球范围内使用率大于n%的浏览器版本，也可以使用大于等于，小于 以及小于等于）
 -  `> 5% in US`: uses USA usage statistics. It accepts [two-letter country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements). （同上，只不过地域限制在美国。统计在美国范围内使用率大于n%的浏览器版本）
--  > 5% in alt-AS: uses Asia region usage statistics. List of all region codes can be found at [`caniuse-lite/data/regions`](https://github.com/ben-eb/caniuse-lite/tree/master/data/regions). （同上述，只不过区域 被限制在了亚洲。）
+-  `5% in alt-AS`: uses Asia region usage statistics. List of all region codes can be found at [`caniuse-lite/data/regions`](https://github.com/ben-eb/caniuse-lite/tree/master/data/regions). （同上述，只不过区域 被限制在了亚洲。）
 -  `> 5% in my stats`: uses [custom usage data](https://github.com/browserslist/browserslist#custom-usage-data). （同上述，只不过支持在自定义数据中查找）
 -  `cover 99.5%`: most popular browsers that provide coverage. （全球范围内最受欢迎的浏览器，同样上述也支持地域参数）
 -  `maintained node versions`: all Node.js versions, which are [still maintained](https://github.com/nodejs/Release) by Node.js Foundation. （所有官方仍在维护的node版本）
@@ -66,21 +66,81 @@
 
 **总结：**
 
-todo
+通过提供的这么些查询方式的排列组合，我们可以找到我们中意的浏览器。最令我意想不到的是还可以支持时间检索（`since 2015` or `last 2 years`），竟然可以精确到日期（`since 2019-03-19`）。后来我又突发奇想，那么既然是搜索能否支持正则匹配搜索呢？经过实践，正则匹配搜索并不支持。那么能否支持区分手机浏览器与电脑浏览器的查询条件呢 ？我找了很久也没有找到，如果可以的话，希望dalao能够指点一二。
 
 # Q3:我可以看到查询出来的浏览器吗?
 
 **解：**
 
+当然可以。挡当前`package.json`目录下执行命令`npx browserslist`，就可以查看到当前搜索条件下的浏览器（这个查出来的浏览器会随时间的不同而不同）。比如我想查询哪些浏览器已经停止维护了，就可以把命令修改为`dead`
 
+```json
+{
+    "browserslist": [
+        "dead"
+    ]
+}
+```
 
-# Q4：其他工具是如何“利用”它的？
+结果：
+
+```sh
+PS E:\ltinerary\vue\document\my-project> npx browserslist
+bb 10
+bb 7
+ie 10
+ie 9
+ie 8
+ie 7
+ie 6
+ie 5.5
+ie_mob 10
+op_mob 12.1
+op_mob 12
+op_mob 11.5
+op_mob 11.1
+op_mob 11
+op_mob 10
+samsung 4
+```
+
+![fangqi](../images/fangqi.png)
+
+# Q4：查出来的这些简写都代表什么浏览器？
 
 **解：**
 
-# Q5：暂未想到，先休息一下明天写
+在Q3中，通过命令查询到了符合条件的浏览器，那么相信大家会和我有这么些疑问 。比如`bb`是代表什么浏览器？baby浏览器？下面的表格列举了这些简写分别代表哪些浏览器。（基于`last 1 versions`）
+
+| 查询出的浏览器简写 | 代表的浏览器                                                 |
+| ------------------ | ------------------------------------------------------------ |
+| `and_chr`          | 安卓谷歌浏览器（phone）                                      |
+| `and_ff`           | 安卓火狐浏览器（phone）                                      |
+| `and_qq`           | 安卓QQ浏览器（phone）                                        |
+| `and_uc`           | 安卓UC浏览器（phone)                                         |
+| `android`          | 安卓浏览器（phone）                                          |
+| `baidu`            | 百度浏览器（PC）                                             |
+| `bb`               | 这个存疑？我更倾向于 Baidu Browser，但是搜bb浏览器，真的能搜到。。。 |
+| `chrome`           | `chrome`浏览器（PC）                                         |
+| `edge`             | `Edge`浏览器（PC ：win10自带的浏览器）                       |
+| `firefox`          | 火狐浏览器（PC）                                             |
+| `ie`               | `IE`浏览器（PC）                                             |
+| `ie_mob`           | 手机ie浏览器（phone）                                        |
+| `ios_saf`          | safari（phone）                                              |
+| `kaios`            | [kaios](https://zh.wikipedia.org/wiki/KaiOS)浏览器（也是一个移动操作系统上的浏览器） |
+| `op_mini`          | Opera Mini（phone）                                          |
+| `op_mob`           | opera手机浏览器（phone）                                     |
+| `opera`            | opera浏览器（PC）                                            |
+| `safari`           | safari浏览器（PC）                                           |
+| `samsung`          | Samsung Internet 浏览器（phone）                             |
 
 
+
+# Q5：其他工具是如何“利用”它的？
+
+
+
+------
 
 # 参考资料
 

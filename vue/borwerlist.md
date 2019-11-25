@@ -21,7 +21,7 @@
 
 # 1.[browserslist](https://github.com/browserslist/browserslist)
 
-原来`browserslist`的配置是指该为哪些浏览器适配代码，其中的每个字段都代表的是查询条件。比如上述的`last 2 versions`代表的是为最近两个版本的浏览器适配代码。那么一大串的问题又接踵而来了，都有哪些查询条件？我可以看到查询出来的浏览器吗？适配的代码是包括`javascript`以及`css`吗？and more...
+（ `Browserslist is a standard place to find project’s target browsers` ）原来`browserslist`的配置是指查询出符合条件的浏览器供一些工具使用以达到适配浏览器的作用，其中的每个字段都代表的是查询条件。比如上述的`last 2 versions`代表的是为最近两个版本的浏览器适配代码。那么一大串的问题又接踵而来了，都有哪些查询条件？我可以看到查询出来的浏览器吗？适配的代码是包括`javascript`以及`css`吗？and more...
 
 ![q](../images/q.png)
 
@@ -68,11 +68,11 @@
 
 通过提供的这么些查询方式的排列组合，我们可以找到我们中意的浏览器。最令我意想不到的是还可以支持时间检索（`since 2015` or `last 2 years`），竟然可以精确到日期（`since 2019-03-19`）。后来我又突发奇想，那么既然是搜索能否支持正则匹配搜索呢？经过实践，正则匹配搜索并不支持。那么能否支持区分手机浏览器与电脑浏览器的查询条件呢 ？我找了很久也没有找到，如果可以的话，希望dalao能够指点一二。
 
-# Q3:我可以看到查询出来的浏览器吗?
+# Q3:   我可以看到查询出来的浏览器吗?
 
 **解：**
 
-当然可以。挡当前`package.json`目录下执行命令`npx browserslist`，就可以查看到当前搜索条件下的浏览器（这个查出来的浏览器会随时间的不同而不同）。比如我想查询哪些浏览器已经停止维护了，就可以把命令修改为`dead`
+当然可以。在当前`package.json`目录下执行命令`npx browserslist`，就可以查看到当前搜索条件下的浏览器（这个查出来的浏览器会随时间的不同而不同）。比如我想查询哪些浏览器已经停止维护了，就可以把命令修改为`dead`
 
 ```json
 {
@@ -138,7 +138,115 @@ samsung 4
 
 # Q5：其他工具是如何“利用”它的？
 
+首先，对于前端开发者来说，我们可以通过`npx browserslist`命令来查看当前项目浏览器的适配情况。咱们人是这么利用它的，那么对于一些工具来说，他们是怎么使用的呢？我们该怎么配置呢？以下的各工具所使用的查询条件基于
 
+```json
+{
+    "browserslist": [
+    "last 1 versions",
+     "ie 9"
+    ]
+}
+```
+
+当前时间下 （`Mon Nov 25 2019 20:42:55 GMT+0800 (中国标准时间)`）所查出来的浏览器列表比问题Q3的解多了一个`ie 9`。   接下来的各个工具分析的打包效果都会以下面的代码为基准。
+
+```vue
+<!--
+ * @Author: 24min
+ * @Date: 2019-11-18 21:15:10
+ * @LastEditors: 24min
+ * @LastEditTime: 2019-11-25 20:24:47
+ * @Description: file content
+ -->
+<template>
+  <div id="app">
+    <div class="Autoprefixer"></div>
+  </div>
+</template>
+<script>
+export default {
+  name: 'app',
+},
+ mounted(){
+    /** Babel begin  es6*/
+    const array = ['firstBabel', 'secondBabel', 'thirdBabel'];
+    const [first, second] = array;
+    console.log(`${first}-${second}`)
+     /** Babel end*/
+ }
+</script>
+<style>
+ //Autoprefixer begin
+.Autoprefixer{
+  height: 100px;
+  width: 100px;
+  background-color: cadetblue;
+  transform: skew(30deg, 20deg);
+}
+//Autoprefixer end
+</style>
+```
+
+
+
+### 1.[Autoprefixer](https://github.com/postcss/autoprefixer)
+
+` Autoprefixer`是一个给`css`代码自动添加浏览器私有属性的工具，它是属于 [PostCSS](http://postcss.org/) 的一个插件。在使用`@vue/cli`生成项目的时候，这个工具是默认安装使用的，具体我们可以在`package.json`中找到蛛丝马迹（也可以是单独的文件配置）。
+
+下面是`package.json`中`Autoprefixer`的配置：
+
+```json
+{
+    "postcss": {
+        "plugins": {
+            "autoprefixer": {}
+        }
+    }
+}
+```
+
+执行`npm run build`完成打包工作。打包后的`css`文件，已经自动根据浏览器加上浏览器的私有属性，如下所示：
+
+```css
+.Autoprefixer {
+    height: 100px;
+    width: 100px;
+    background-color: #5f9ea0;
+    -webkit-transform: skew(30deg, 20deg);
+    -ms-transform: skew(30deg, 20deg);
+    transform: skew(30deg, 20deg)
+}
+```
+
+### 2.Babel
+
+>  [Babel](https://babeljs.io/) is a tool to compile JS files. The most popular way to use it is to compile future JS syntaxes to JS supported by target browsers. From Babel 7.0 `@babel/preset-env` loads target browsers from the same `Browserslist` config. 
+
+Babel是一个编译`javascript`的工具。众所周知，`IE`，到目前为止还没有实现`ES6`的语法（应该也不会实现了~-~）。那么我们可以通过`ES6`的语法来检查`Babel`是否工作正常。打包出来的`javascript`文件已经是兼容写法了：
+
+```js
+ mounted: function() {
+     var e = ["firstBabel", "secondBabel", "thirdBabel"],
+     t = e[0],
+     n = e[1];
+     console.log("".concat(t, "-").concat(n))
+ }
+```
+
+假如目标浏览器只是`Chrome`，我们来看打包出来的`javascript`文件有什么不同。所以在这里我们修改目标浏览器。把查询条件修改为`last 2 Chrome versions`。可以看到仍为`ES6`语法。
+
+```js
+mounted() {
+   const e = ["firstBabel", "secondBabel", "thirdBabel"],
+    [t, n] = e;
+    console.log(`${t}-${n}`)
+ }
+```
+
+### 3.and  more。。。
+
+![breakup](../images/breakup.png)
 
 ------
 
@@ -146,4 +254,5 @@ samsung 4
 
 - [前端工程基础知识点--BrowsersList(基于官方文档翻译)](https://juejin.im/post/5b8cff326fb9a019fd1474d6)
 - [Browserslist的git仓库](https://github.com/browserslist/browserslist)
+- [Browserslist Example](https://github.com/browserslist/browserslist-example) 
 

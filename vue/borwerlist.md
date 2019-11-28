@@ -19,7 +19,7 @@
 
 带着这些疑问，带上我的键盘，开始疯狂在网上冲浪。
 
-# 1.[browserslist](https://github.com/browserslist/browserslist)
+# [browserslist](https://github.com/browserslist/browserslist)
 
 （ `Browserslist is a standard place to find project’s target browsers` ）原来`browserslist`的配置是指查询出符合条件的浏览器供一些工具使用以达到适配浏览器的作用，其中的每个字段都代表的是查询条件。比如上述的`last 2 versions`代表的是为最近两个版本的浏览器适配代码。那么一大串的问题又接踵而来了，都有哪些查询条件？我可以看到查询出来的浏览器吗？适配的代码是包括`javascript`以及`css`吗？and more...
 
@@ -244,9 +244,90 @@ mounted() {
  }
 ```
 
-### 3.and  more。。。
+### 3.[Eslint](https://eslint.org/)
 
-![breakup](../images/breakup.png)
+`Eslint`是一个代码风格检查器，规范在团队内的代码风格。我们可以在`package.json`中配置`Eslint`的配置字段。
+
+```json
+{
+     "eslintConfig": {
+        "root": true,
+        "env": {
+            "node": true
+        },
+        "extends": [
+            "plugin:vue/essential",
+            "eslint:recommended"
+        ],
+        "rules": {},
+        "parserOptions": {
+            "parser": "babel-eslint"
+        }
+    },
+}
+```
+
+上述的`eslintConfig`是脚手架创建项目的时候自动生成的默认配置。
+
+上述配置中的`"root": true,`停止在父级目录中检查寻找。`env`代表在哪个环境中启用，上述代表在node环境中启用。`extends`表示一个配置文件可以被基础配置中的已启用的规则继承，`rules`代表配置的具体检查规则，具体规则请参照官网。`parserOptions`允许指定你想要支持的`JavaScript`语言选项，其中的`parser`代表使用什么作为解析器。
+
+### 4.[PostCSS Normalize](https://github.com/csstools/postcss-normalize)
+
+>  Browsers have different default styles. To have same styles in all browsers we need to “normalize” these differences. 
+
+各家浏览器都有不同的默认样式，使用`PostCSS Normailze`会针对目标浏览器生成默认的统一的重置样式。和自动添加前缀的插件一样都属于`postcss`的插件。
+
+```json
+{
+   "postcss": {
+       "plugins": {
++          "postcss-normalize": {},
+           "autoprefixer": {}
+        }
+  },
+}
+```
+
+我们新建一个`normalize.css`文件，在该文件中写下这么一句代码（并且需要在入口文件中引入）
+
+```css
+@import-normalize
+```
+
+那么生成的样式将会在`@import-normalize`中引入。下面的图片将会比较引入与不引入打包生成的样式文件的区别。
+
+![normaicss](../images/normaicss.png)
+
+# Q6：可以在不同环境配置不同的查询条件吗？
+
+**解：**
+
+![sure](../images/sure.png)
+
+>  You can also specify different browser queries for various environments. Browserslist will choose query according to `BROWSERSLIST_ENV` or `NODE_ENV` variables. If none of them is declared, Browserslist will firstly look for `production` queries and then use defaults. 
+
+所以可以这么配置：
+
+```json
+{
+   "browserslist": {
+      "production": [
+          "last 1 firefox version"
+       ],
+       "development": [
+           "last 1 chrome version"
+        ]
+     }
+}
+```
+
+*注意：*也支持自定义的环境变量名！其次如果你配置的环境中查询条件有错误，将会使用`production`的查询条件，如果`production`的查询条件也不可用，那么将会使用默认配置。
+
+
+
+![flowers](../images/flowers.png)
+
+=================想到再更新==================
 
 ------
 

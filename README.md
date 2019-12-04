@@ -11,6 +11,8 @@ typora-copy-images-to: images
 - [vue相关](vue/README.md)
   - [关于package.json中的`browserslist`](vue/borwerlist.md)
   - [运行依赖与开发依赖](vue/dependencies.md)
+- [`javascript`相关](js/README.md)
+  - [`cron`表达式](js/cron.md)
 
 # 女神镇楼
 

@@ -64,11 +64,47 @@ function NumberList(props) {
 >
 > 
 
-**解：**这个知识点是关于es6的对象的继承。([存疑？](https://github.com/ruanyf/es6tutorial/issues/959))子类必须在`constructor`方法中调用`super`方法，否则新建实例时会报错。这是因为子类自己的`this`对象，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。如果不调用`super`方法，子类就得不到`this`对象。比如下面的代码：
+**解：**这个知识点是关于[es6的对象的继承](https://es6.ruanyifeng.com/#docs/class-extends)。子类必须在`constructor`方法中调用`super`方法，否则新建实例时会报错。这是因为子类自己的`this`对象，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。如果不调用`super`方法，子类就得不到`this`对象。比如下面的代码：
 
 ```js
 class father{}
-class son extends father{}
-let new_son = new son() 
+class son extends father{
+    constructor(){}
+}
+let new_son = new son()  
+//Uncaught ReferenceError: Must call super constructor in derived class before accessing 'this' or returning from derived constructor
+
 ```
 
+***注意：***假如在父类中不显示定义`constructor(){}`，那么引擎会自动添加空。对于继承的子类，假如不显示定义`constructor`方法，那么引擎会默认添加` constructor(...args) { super(...args);}`。
+
+------
+
+### Q4：React组件的生命周期有哪些？
+
+**解：**
+
+![reactCompoent](../images/reactCompoent.png)
+
+当一个React组件被创建时，首先是经历组件挂载(当组件实例被创建并插入 DOM 中)的阶段：
+
+- [**`constructor()`**](https://zh-hans.reactjs.org/docs/react-component.html#constructor)
+- [`static getDerivedStateFromProps()`](https://zh-hans.reactjs.org/docs/react-component.html#static-getderivedstatefromprops)
+- [**`render()`**](https://zh-hans.reactjs.org/docs/react-component.html#render)
+- [**`componentDidMount()`**](https://zh-hans.reactjs.org/docs/react-component.html#componentdidmount)
+
+当组件的 props 或 state 发生变化时会触发更新。组件更新的生命周期调用顺序如下：
+
+- [`static getDerivedStateFromProps()`](https://zh-hans.reactjs.org/docs/react-component.html#static-getderivedstatefromprops)
+- [`shouldComponentUpdate()`](https://zh-hans.reactjs.org/docs/react-component.html#shouldcomponentupdate)
+- [**`render()`**](https://zh-hans.reactjs.org/docs/react-component.html#render)
+- [`getSnapshotBeforeUpdate()`](https://zh-hans.reactjs.org/docs/react-component.html#getsnapshotbeforeupdate)
+- [**`componentDidUpdate()`**](https://zh-hans.reactjs.org/docs/react-component.html#componentdidupdate)
+
+当组件从 DOM 中移除时会调用如下方法：
+
+- [**`componentWillUnmount()`**](https://zh-hans.reactjs.org/docs/react-component.html#componentwillunmount)
+
+------
+
+### Q5：

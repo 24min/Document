@@ -107,4 +107,17 @@ let new_son = new son()
 
 ------
 
-### Q5：
+### Q5：为什么引入React组件的时候要使用`PureComponent`?
+
+> ```js
+> import React, { PureComponent as Component } from 'react';
+> ```
+
+*注:这个是我在看`yapi`这个项目时候的一个疑惑。为什么要用`PureComponent`？*
+
+`React.Component`和`React.PureComponent`几乎完全相同。区别在于 [`React.Component`](https://zh-hans.reactjs.org/docs/react-api.html#reactcomponent) 并未实现 [`shouldComponentUpdate()`](https://zh-hans.reactjs.org/docs/react-component.html#shouldcomponentupdate)，而 `React.PureComponent` 中以浅层对比 prop 和 state 的方式来实现了该函数。也就是说假如你的新建的组件从`PureComponent`继承，基本类型的值改变以及引用类型的指向地址改变才会触发渲染。那么什么时候该用`React.Component`？什么时候该用`React.PureComponent`呢？一般来说你的数据会发生频繁变化的时候使用`React.Component`。
+
+我大致翻了一下`yapi`的项目，基本都使用`PureComponent`来创建组件。
+
+[关于两个区别的详解](https://juejin.im/post/5b614d9bf265da0fa759e84b)  [官网解释](https://zh-hans.reactjs.org/docs/react-api.html)
+

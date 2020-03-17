@@ -121,3 +121,89 @@ let new_son = new son()
 
 [关于两个区别的详解](https://juejin.im/post/5b614d9bf265da0fa759e84b)  [官网解释](https://zh-hans.reactjs.org/docs/react-api.html)
 
+### Q6:React 的错误边界能捕获哪些错误？
+
+​       一开始我以为能捕获组件内任何错误，但当我在一个js方法内`throw new Error`的时候才发现，错误边界的组件并没有被渲染。一些js的错误异常，并不会被错误边界所捕获。
+
+ 错误异常边界组件能够捕获的异常，主要包括：
+
+- 渲染过程中的异常。
+- 生命周期方法中的异常。
+- 子组件树中各组件的构造函数的异常。
+
+```js
+/*
+ * @Author: 24min
+ * @Date: 2020-03-09 09:13:14
+ * @LastEditors: 24min
+ * @LastEditTime: 2020-03-17 19:39:00
+ * @Description: file content
+ */
+import './test.scss'
+import React, { PureComponent as Component } from 'react'
+import { Button, Empty } from 'antd';
+
+function Home(props) {
+    if (props.name === 'fanjf') {
+        return <h1 onClick={props.onClick}>welcome Home,{props.name}</h1>;
+    } else {
+        return <div>welcome Home,{props.name}</div>;
+    }
+}
+
+function NumberList(props) {
+     throw new Error('I crashed!') //可以跳转到边界组件
+    const numbers = props.numbers
+    //     const listItems = numbers.map((number) =>
+    //     <li>{number}</li>
+    //   );
+    //   return (
+    //     <ul>{listItems}</ul>
+    //   );
+    let aa = numbers.map(num => <li>{num}</li>);
+    console.log('map', aa)
+    // return (<ul>{numbers.forEach(num => <li>{num}</li> )}</ul>)  不能用foreach 因为foreach没有返回值 不能这么写
+    return (<ul>{numbers.map(num => <li>{num}</li>)}</ul>)
+}
+export default class Test extends Component {
+    constructor(props) {
+        super(props)
+        // throw new Error('I crashed!'); 可以跳转到边界组件
+    }
+    componentWillMount() {
+        try {
+            let a = 1
+            a.a = 1
+        } catch (error) {
+            console.log(error)
+        }//不会跳转到边界组件
+        // throw new Error('I crashed!');  可以跳转到边界组件
+    }//在新版本中不建议使用
+    componentDidMount() { }
+    a(e) {
+        throw new Error('I crashed!');
+    }
+    render() {
+        // if(true){
+        //     throw new Error('I crashed!');  可以跳转到边界组件
+        // }
+        return (
+            <div>
+                {/* <button onClick={this.a} >aaaa</button> */}
+               <NumberList numbers={[1, 2, 3, 5]} />
+                <Home name='fanjf' onClick={(e) => this.a(e)}  />
+            </div>
+        )
+    }
+}
+
+```
+
+
+
+------
+
+### Q7:
+
+
+

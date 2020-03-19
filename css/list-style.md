@@ -32,6 +32,12 @@
 
 ------
 
+### 另外
+
+`list-style`这个属性不仅可以用于`<ul>`标签上，他的子元素`<li>`也可以使用这个属性。假如父元素设置为`list-style-type:'decimal'`，子元素的前两项设置为`list-style-type:'\1F44D'`。那么最后出来的结果会是下图所示的样子：
+
+![li-list-style](../images/li-list-style.png)
+
 ### 参考资料
 
 - [MDN文档关于list-type的描述](https://developer.mozilla.org/zh-CN/docs/Web/CSS/list-style)

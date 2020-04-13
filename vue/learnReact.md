@@ -205,7 +205,19 @@ export default class Test extends Component {
 
 ### Q7:`react-router`和`react-router-dom`有什么区别？
 
-### Q8:该如何在项目中使用路由？
+`react-router`相关的路由包一共有这么几个。
+
+- `react-router`：实现了路由的核心功能
+- `react-router-dom`：用于DOM绑定的`react-router`。它的实现基于`react-router`，但加入了浏览器运行环境下的一些功能。例如：<Link>组件可以渲染成为一个a标签运行，
+- `react-router-native`：用于 `React Native`的`React Router`，加入了`react-native`运行环境下的一些功能。
+- `react-router-redux`：React Router 和 Redux 的集成。
+- `react-router-config`：静态路由配置的小助手
+
+所以他们的关系是 `react-router-dom`依赖于`react-router`，是`react-router`的扩展和完善。在浏览器运行环境下，我们只需要引入`react-router-dom`就行了。
+
+### Q8:[该如何使用路由](https://reacttraining.com/react-router/web/example/basic)？
+
+### Q9：
 
 
 

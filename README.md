@@ -1,10 +1,19 @@
+<!--
+ * @Author: 24min
+ * @Date: 2019-11-21 20:37:31
+ * @LastEditors: 24min
+ * @LastEditTime: 2021-12-06 21:50:45
+ * @FilePath: \Document\README.md
+ * @note: If it ain't broke, don't fix it.🍤
+ * @Description: to bo continued...
+-->
 ---
 typora-copy-images-to: images
 ---
 
 # 简介
 
-少说话，多研究
+少说话，多研究   
 
 # 导航
 
